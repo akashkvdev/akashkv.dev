@@ -29,6 +29,17 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "LiMoVPcTJR1N8TF3a",
+      });
+   })();
+</script>
+
 
 </head>
 
@@ -701,7 +712,7 @@
 
           <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
             
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+            <form onsubmit="event.preventDefault(); sendMail();" class="php-email-form">
               <!-- <div id="message-container mb-3"></div> -->
               <div class="row">
                 <div class="form-group col-md-6">
@@ -719,16 +730,16 @@
               </div>
               <div class="form-group">
                 <label for="name">Message</label>
-                <textarea class="form-control" name="message" rows="10" required></textarea>
+                <textarea class="form-control" id="message" name="message" rows="10" required></textarea>
               </div>
               <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message" id="error-message"></div>
+                <!-- <div class="loading">Loading</div>
+                <div class="error-message" id="error-message"></div> -->
                 <div class="sent-message">Your message has been sent. Thank you!</div>
               </div>
-              <div class="text-center"><button type="submit" name="send" disabled>Send Message</button></div>
+              <div class="text-center"><button type="submit" name="send" >Send Message</button></div>
               <div class="text-center">
-                <small class="text-danger fw-bolder">Apologies, but there's a hiccup in the functionality of this service.</small>
+                <!-- <small class="text-danger fw-bolder">Apologies, but there's a hiccup in the functionality of this service.</small> -->
 
               </div>
             </form>
@@ -773,6 +784,33 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
+  <script>
+    function sendMail(){
+    var params={
+        name:document.getElementById("name").value,
+        email:document.getElementById("email").value,
+        subject:document.getElementById("subject").value,
+        message:document.getElementById("message").value,
+    }
+    const serviceId="service_knzbapq";
+    const templateID="template_9zreh8k"
+    
+    
+    emailjs.send(serviceId,templateID,params).then(
+        res=>{
+            document.getElementById("name").value='';
+            document.getElementById("email").value='';
+            document.getElementById("subject").value='';
+            document.getElementById("message").value='';
+            console.log(res);
+            alert("Your Message Sent Successfully");
+            document.querySelector('.sent-message').style.display = 'block';
+        }
+    ).catch(err=>console.log(err));
+}
+
+
+  </script>
     
 
 </body>
